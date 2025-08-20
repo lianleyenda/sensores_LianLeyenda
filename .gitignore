@@ -1,5 +1,8 @@
 .venv/
 
+sensore.sqlite
+sensore.sqbpro
+
 *.pyc
 __pycache__/
 
