@@ -31,7 +31,7 @@ app = Flask(__name__)
 app.teardown_appcontext(cerrarConexion)
 
 
-@app.route("/api/sensor", methods=['POST'])
+@app.route("/api/sensor/enviar", methods=['POST'])
 def valor():
     db=abrirConexion()
     Sensor= request.json['Nombre']
@@ -39,3 +39,22 @@ def valor():
     print(f"{Sensor} y {Valor}")
     cerrarConexion()
     return "ok"
+
+
+@app.route("/api/sensor", methods=['POST'])
+def insertar():
+    db = abrirConexion()
+    data = request.get_json()   # toma el JSON enviado en el POST
+    Sensor = data['Nombre']
+    Valor = data['Valor']
+    cursor = db.cursor()
+    cursor.execute(
+        'INSERT INTO Valores (Nombre, Valor) VALUES (?, ?)',
+        (Sensor, Valor)#remplaza los signos ?
+    )
+
+    db.commit()  # guarda los cambios en la base
+
+    return {"status": "ok", "mensaje": f"Insertado {Sensor} con valor {Valor}"}
+
+
