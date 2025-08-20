@@ -59,5 +59,14 @@ def insertar():
     return jsonify(respuesta)
 
 
+@app.route("/api/sensor/mostrar")
+def mostrar():
+    db = abrirConexion()
+    resultado = db.execute('SELECT * FROM Valores').fetchall()
+    cerrarConexion()
+    return resultado
+    
+
+
 
 
