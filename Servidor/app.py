@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, request, g
+from flask import Flask, request, g, jsonify
 
 def dict_factory(cursor, row):
  """Arma un diccionario con los valores de la fila."""
@@ -54,7 +54,10 @@ def insertar():
     )
 
     db.commit()  # guarda los cambios en la base
+    respuesta = {"repuesta" : "ok"}
+    cerrarConexion()
+    return jsonify(respuesta)
 
-    return {"status": "ok", "mensaje": f"Insertado {Sensor} con valor {Valor}"}
+
 
 
