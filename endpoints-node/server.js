@@ -1,4 +1,5 @@
 import express from "express";
+import pool from "./db.js";
 
 const app =
   express(); /*cunado escribis una variable en mayuscula va a seer constante realmente nunca va a 
@@ -32,6 +33,50 @@ app.post("/api/user", (req, res) => {
   res.json({ mensaje: "Usuario creado", data: { name, email } });
 });
 
+
+
+
+
+//PUT
+app.put('/api/users/:id', (req, res) =>{
+ const {id} = req.params //sirve para tomar un valor y q no rompa el codigo
+ const {name, email} = req.body
+ res.json({
+  mensaje: `Este es el usuario con id ${id}`,
+  data: {name, email}
+ });
+
+
+})
+
+//DELETE
+app.delete('/api/user/:id', (req, res) =>{
+  const {id} = req.params;
+  res.json({mensaje: `Usuario con ID ${id} eliminado`})
+});
+
+
+
+//endpoints DB
+app.get('/api/products', async(req, res) =>{
+  try{
+//codgio a probar
+const [rows] = await pool.query("SELECT * FROM Productos")
+res.json(rows);
+
+  }catch(error){
+    console.log(error)
+    res.status(500).json({erro: "Error en la consulta"})
+  }
+})
+
+
+
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 }); /*SIRVE PARA QUE CORRA EL PUERTO CONSTANTEMENTE*/
+
+
+
+
+
